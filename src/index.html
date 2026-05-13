@@ -1,14 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Git api module</title>
+    <style>
+        * {
+            font-family: sans-serif;
+        }
+
+        .descrip span {
+            color: white;
+            font-weight: 600;
+        }
+
+        .bg-backblue {
+            background-color: #0f1728;
+        }
+
+        .bg-card {
+            background-color: #131f38;
+        }
+    </style>
+
 </head>
+
 <body>
-    <i class="fa fa-spinner animate-spin" ></i>
-    <script src="script.js" ></script>    
+    <nav class="h-24 border-b  bg-backblue flex items-end p-4 justify-center gap-[300px]">
+        <h1 class="text-2xl font-semibold text-white">Dev detective</h1>
+        <div class="w-80 h-15 border border-gray-500 rounded-2xl flex items-center justify-center gap-5 p-2">
+            <i class="fa-solid fa-magnifying-glass text-white text-xl cursor-pointer" title="Search"></i>
+            <input type="text" class="w-[250px] h-8 bg-backblue text-gray-200 rounded-xl p-2" placeholder="Search User">
+        </div>
+
+    </nav>
+    <main class="min-h-[500px] bg-backblue flex flex-col gap-5 items-center justify-center p-10">
+        <div>
+            <h1 class="text-white font-semibold text-2xl mb-4">Result for srijanstack</h1>
+            <div class="h-auto w-[750px] rounded-2xl border flex items-start items-center p-8 gap-8 bg-card">
+                <img src="https://avatars.githubusercontent.com/u/226473418?v=4" loading="lazy" alt="user"
+                    class="rounded-[50%] h-[200px] w-[200px] ">
+                <div class="text-gray-500 descrip flex flex-col gap-2">
+                    <h1 class="text-4xl text-white font-semibold"> Srijan Rawat</h1>
+                    <p class="text-white mb-2">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laudantium id
+                        cum
+                        omnis
+                        totam esse ipsa mollitia fuga provident? Expedita est velit voluptates dignissimos et
+                        repudiandae
+                        rem facere atque consequatur recusandae!</p>
+                    <div class="gap-40 flex">
+                        <div class="flex flex-col gap-1">
+                            <h1><i class="fa-solid fa-calendar"></i><span></span></h1>
+                            <h1><i class="fa-solid fa-link"></i><a> </a></h1>
+                        </div>
+                        <div class=" grid grid-cols-2 gap-x-10 gap-y-1">
+                            <p>Following:</p>
+                            <p>Followers:</p>
+                            <span>10</span> <span>20</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div >
+            <h1 class="text-white font-semibold text-2xl mb-4">Latest repos for srijanstack</h1>
+            <div class="flex">
+                <div class="h-[200px] w-[300px] border rounded-xl bg-card text-white p-4">
+                    <h1 class="text-2xl">1) something</h1>
+                    <h2 class="text-lg">Language</h2>
+                    <div></div>
+                    <p><i class="fa-solid fa-link"></i><a> </a></p>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="script.js"></script>
 </body>
+
 </html>
