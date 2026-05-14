@@ -14,11 +14,6 @@
         font-family: sans-serif;
       }
 
-      .descrip span {
-        color: white;
-        font-weight: 600;
-      }
-
       .bg-backblue {
         background-color: #0f1728;
       }
@@ -34,11 +29,11 @@
 
   <body>
     <nav
-      class="h-24 border-b bg-backblue flex items-end p-4 justify-center gap-[300px]"
+      class="h-24 border-b bg-backblue flex items-end p-4 justify-center gap-10 sm:gap-[100px] md:gap-[300px]"
     >
       <h1 class="text-2xl font-semibold text-white">Dev detective</h1>
       <div
-        class="w-80 h-15 border border-gray-500 rounded-2xl flex items-center justify-center gap-5 p-2"
+        class="h-15 border border-gray-500 rounded-2xl flex items-center justify-center gap-5 p-2"
       >
         <i
           class="fa-solid fa-magnifying-glass text-white text-xl cursor-pointer"
@@ -47,7 +42,7 @@
         ></i>
         <input
           type="text"
-          class="w-[250px] h-8 bg-backblue text-gray-200 rounded-xl p-2"
+          class="w-[100px] md:w-[250px] h-8 bg-backblue text-gray-200 rounded-xl p-2"
           placeholder="Enter Username"
           id="userInput"
         />
@@ -57,14 +52,14 @@
       class="min-h-[500px] bg-backblue flex flex-col gap-5 items-center justify-center p-10"
     >
       <div>
-        <h1 class="text-white font-semibold text-4xl mb-4" id="enterUsr">Enter a Username</h1>
+        <h1 class="text-white font-semibold text-4xl mb-4" id="enterUsr">
+          Enter a Username
+        </h1>
 
         <h1
           class="text-white font-semibold text-2xl mb-4 hidden"
           id="resultHeader"
-        >
-          Result for srijanstack
-        </h1>
+        ></h1>
         <div
           class="h-full w-full text-white flex items-center justify-center m-20 ml-0 hidden"
           id="loader"
@@ -72,16 +67,124 @@
           <i class="fa-solid fa-circle-notch animate-spin text-[4rem]"></i>
         </div>
         <div
-          class="h-auto w-[750px] rounded-2xl border items-start items-center p-8 gap-8 bg-card hidden"
+          class="h-auto md:w-[750px] rounded-2xl border flex flex-col md:flex-row hidden items-center p-8 gap-8 bg-card"
           id="userCard"
         ></div>
       </div>
       <div>
-        <h1 class="text-white font-semibold text-2xl mb-4">
-          Latest repos for srijanstack
-        </h1>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4" id="repoContainer">
+        <h1
+          class="text-white font-semibold text-2xl mb-4 hidden"
+          id="latestRepoHead"
+        ></h1>
+        <div
+          class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4"
+          id="repoContainer"
+        ></div>
+      </div>
+      <button
+        class="p-4 text-2xl font-semibold text-white bg-purple-800 rounded-2xl hover:scale-105 transition duration-300"
+        id="battleModeBtn"
+      >
+        Enter Battle Mode
+      </button>
+      <div class="flex gap-10 items-center justify-center hidden" id="battleMode">
+        <div
+          class="bg-card border border-slate-700 rounded-2xl p-6 shadow-xl w-full max-w-sm"
+        >
+          <div class="flex items-center justify-between mb-5">
+            <h2 class="text-xl font-bold text-white">Player One</h2>
 
+            <span
+              class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm font-semibold"
+            >
+              Winner
+            </span>
+          </div>
+
+          <div class="flex gap-2 mb-6">
+            <input
+              type="text"
+              id="playerOneInput"
+              placeholder="Enter GitHub username"
+              class="flex-1 px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div class="flex justify-center mb-4">
+            <img
+          
+              src="https://avatars.githubusercontent.com/u/9919?v=4"
+              alt="GitHub Avatar"
+              class="w-24 h-24 rounded-full border-4 border-slate-700 object-cover"
+            />
+          </div>
+
+          <div class="text-center mb-5">
+            <h3  class="text-2xl font-bold text-white">
+              github
+            </h3>
+
+            <p  class="text-blue-400 text-sm">@github</p>
+          </div>
+
+          <div class="bg-slate-900 rounded-xl p-4 text-center">
+            <p class="text-slate-400 text-sm uppercase tracking-wide mb-1">
+              Total Stars
+            </p>
+
+            <p  class="text-3xl font-bold text-yellow-400">
+              ⭐ 438,000
+            </p>
+          </div>
+        </div>
+        <button
+          class="text-4xl border text-white p-3 h-16 rounded-xl bg-red-500/20"
+        >
+          Battle
+        </button>
+        <div
+          class="bg-card border border-slate-700 rounded-2xl p-6 shadow-xl w-full max-w-sm"
+        >
+          <div class="flex items-center justify-between mb-5">
+            <h2 class="text-xl font-bold text-white">Player One</h2>
+
+            <span
+              class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm font-semibold"
+            >
+              Winner
+            </span>
+          </div>
+
+          <div class="flex gap-2 mb-6">
+            <input
+              type="text"
+               id="playerTwoInput"
+              placeholder="Enter GitHub username"
+              class="flex-1 px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div class="flex justify-center mb-4">
+            <img
+              src="https://avatars.githubusercontent.com/u/9919?v=4"
+              alt="GitHub Avatar"
+              class="w-24 h-24 rounded-full border-4 border-slate-700 object-cover"
+            />
+          </div>
+
+          <div class="text-center mb-5">
+            <h3 class="text-2xl font-bold text-white">github</h3>
+
+            <p class="text-blue-400 text-sm">@github</p>
+          </div>
+
+          <div class="bg-slate-900 rounded-xl p-4 text-center">
+            <p class="text-slate-400 text-sm uppercase tracking-wide mb-1">
+              Total Stars
+            </p>
+
+            <p class="text-3xl font-bold text-yellow-400">⭐ 438,000</p>
+          </div>
         </div>
       </div>
     </main>

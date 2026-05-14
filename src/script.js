@@ -8,6 +8,7 @@ const dataLoaded = document.getElementsByClassName("dataLoaded");
 const enterUsr = document.getElementById("enterUsr");
 const resultHeader = document.getElementById("resultHeader");
 const repoContainer = document.getElementById("repoContainer")
+const latestRepoHead = document.getElementById("latestRepoHead")
 
 
 searchBtn.addEventListener('click', () => {
@@ -108,7 +109,9 @@ async function getUser(username) {
   if (username) {
     resultHeader.classList.remove("hidden");
     resultHeader.innerText = ` Result for ${username}`;
-    enterUsr.classList.add("hidden")
+    enterUsr.classList.add("hidden");
+    latestRepoHead.innerHTML = `Latest repos for ${username}`
+    latestRepoHead.classList.remove("hidden")
     renderRepos([]);
   };
   try {
@@ -140,11 +143,13 @@ async function getUserRepos(username) {
     const data = await res.json();
     renderRepos(data)
   } catch {
-
+    throw new Error("No repos found")
   }
 }
 
 function renderRepos(repos) {
+
+
 
   const languageColors = {
     JavaScript: "#f1e05a",
