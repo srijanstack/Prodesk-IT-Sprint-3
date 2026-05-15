@@ -22,12 +22,32 @@ const playerTwoInput = document.getElementById("playerTwoInput");
 
 const battleBtn = document.getElementById("battleBtn");
 
-
+/* utils */
 const loaderUI = `<div
           class="h-full w-full text-white flex items-center justify-center m-20 ml-0 "
         >
           <i class="fa-solid fa-circle-notch animate-spin text-[4rem]"></i>
         </div>`
+
+        
+function renderError(message) {
+
+  const errorUI = `
+    <div class="w-full text-center py-10">
+      <i class="fa-solid fa-circle-exclamation text-red-500 text-5xl mb-4"></i>
+      <h2 class="text-3xl font-semibold text-red-400 mb-2">
+        ${message}
+      </h2>
+      <p class="text-gray-400">
+        Please try another GitHub username.
+      </p>
+    </div>
+  `;
+  return errorUI;
+}
+
+
+/* Battle mode */
 
 battleBtn.addEventListener('click', () => {
   if (!playerOneInput.value || !playerTwoInput.value) {
@@ -184,6 +204,8 @@ battleModeBtn.addEventListener('click', () => {
 })
 
 
+/* Search User*/
+
 searchBtn.addEventListener('click', () => {
   const user = userInput.value;
   if (!user) {
@@ -260,22 +282,6 @@ function renderProfile(data) {
         </div>
       </div>
   `;
-}
-
-function renderError(message) {
-
-  const errorUI = `
-    <div class="w-full text-center py-10">
-      <i class="fa-solid fa-circle-exclamation text-red-500 text-5xl mb-4"></i>
-      <h2 class="text-3xl font-semibold text-red-400 mb-2">
-        ${message}
-      </h2>
-      <p class="text-gray-400">
-        Please try another GitHub username.
-      </p>
-    </div>
-  `;
-  return errorUI;
 }
 
 async function getUser(username) {
