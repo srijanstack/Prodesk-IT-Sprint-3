@@ -49,12 +49,25 @@
       </div>
     </nav>
     <main
-      class="min-h-[500px] bg-backblue flex flex-col gap-5 items-center justify-center p-10"
+      class="min-h-screen bg-backblue flex flex-col gap-5 items-center justify-center p-10"
     >
       <div>
-        <h1 class="text-white font-semibold text-4xl mb-4" id="enterUsr">
-          Enter a Username
-        </h1>
+        <section class="text-center mb-10 max-w-4xl" id="enterUsr">
+          <h1
+            class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-4"
+          >
+            Discover, Analyze, and
+            <span class="text-purple-500"> Battle GitHub Profiles </span>
+          </h1>
+
+          <p
+            class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed"
+          >
+            Explore any developer's GitHub profile, inspect their latest
+            repositories, and compare two developers head-to-head based on their
+            open-source impact.
+          </p>
+        </section>
 
         <h1
           class="text-white font-semibold text-2xl mb-4 hidden"
@@ -81,113 +94,67 @@
           id="repoContainer"
         ></div>
       </div>
+      <h1
+        class="text-2xl md:text-4xl font-extrabold text-white leading-tight mb-6"
+      >
+        Compare Developers.
+        <br />
+        <span
+          class="text-purple-500"
+        >
+          Let the Stars Decide.
+        </span>
+      </h1>
       <button
         class="p-4 text-2xl font-semibold text-white bg-purple-800 rounded-2xl hover:scale-105 transition duration-300"
         id="battleModeBtn"
       >
         Enter Battle Mode
       </button>
-      <div class="flex gap-10 items-center justify-center hidden" id="battleMode">
-        <div
-          class="bg-card border border-slate-700 rounded-2xl p-6 px-16 shadow-xl w-full max-w-sm"
-          id="player-1"
-        >
-          <div class="flex items-center justify-between mb-5">
-            <h2 class="text-xl font-bold text-white">Player One</h2>
 
-            <span
-              class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm font-semibold"
-            >
-              Winner
-            </span>
-          </div>
-
-          <div class="flex gap-2 mb-6">
+      <div
+        id="battleMode"
+        class="hidden w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center gap-8 mt-10"
+      >
+        <div class="w-full max-w-sm">
+          <div class="flex gap-2 mb-4">
             <input
               type="text"
               id="playerOneInput"
               placeholder="Enter GitHub username"
-              class="flex-1 px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 outline-none focus:ring-2 focus:ring-blue-500"
+              class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
-          <div class="flex justify-center mb-4">
-            <img
-          
-              src="https://avatars.githubusercontent.com/u/9919?v=4"
-              alt="GitHub Avatar"
-              class="w-24 h-24 rounded-full border-4 border-slate-700 object-cover"
-            />
-          </div>
-
-          <div class="text-center mb-5">
-            <h3  class="text-2xl font-bold text-white">
-              github
-            </h3>
-
-            <p  class="text-blue-400 text-sm">@github</p>
-          </div>
-
-          <div class="bg-slate-900 rounded-xl p-4 text-center">
-            <p class="text-slate-400 text-sm uppercase tracking-wide mb-1">
-              Total Stars
-            </p>
-
-            <p  class="text-3xl font-bold text-yellow-400">
-              ⭐ 438,000
-            </p>
-          </div>
+          <div
+            id="player-1"
+            class="bg-card border border-slate-700 rounded-2xl p-6 hidden shadow-xl min-w-[300px]"
+          ></div>
         </div>
-        <button
-          class="text-4xl border text-white p-3 h-16 rounded-xl bg-red-500/20"
-          id="battleBtn"
-        >
-          Battle
-        </button>
-        <div
-          class="bg-card border border-slate-700 rounded-2xl p-6 px-16 shadow-xl w-full max-w-sm"
-          id="player-2"
-        >
-          <div class="flex items-center justify-between mb-5">
-            <h2 class="text-xl font-bold text-white">Player Two</h2>
 
-            <span
-              class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm font-semibold"
-            >
-              Winner
-            </span>
-          </div>
+        <div class="w-full lg:w-auto flex justify-center lg:pt-12">
+          <button
+            id="battleBtn"
+            class="px-6 py-4 text-2xl font-bold text-white rounded-2xl shadow-lg hover:scale-105 transition bg-orange-400 duration-300"
+          >
+            Battle
+          </button>
+        </div>
 
-          <div class="flex gap-2 mb-6">
+        <div class="w-full max-w-sm">
+          <div class="flex gap-2 mb-4">
             <input
               type="text"
-               id="playerTwoInput"
+              id="playerTwoInput"
               placeholder="Enter GitHub username"
-              class="flex-1 px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 outline-none focus:ring-2 focus:ring-blue-500"
+              class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
-          <div class="flex justify-center mb-4">
-            <img
-              src="https://avatars.githubusercontent.com/u/9919?v=4"
-              alt="GitHub Avatar"
-              class="w-24 h-24 rounded-full border-4 border-slate-700 object-cover"
-            />
-          </div>
-
-          <div class="text-center mb-5">
-            <h3 class="text-2xl font-bold text-white">github</h3>
-
-            <p class="text-blue-400 text-sm">@github</p>
-          </div>
-
-          <div class="bg-slate-900 rounded-xl p-4 text-center">
-            <p class="text-slate-400 text-sm uppercase tracking-wide mb-1">
-              Total Stars
-            </p>
-
-            <p class="text-3xl font-bold text-yellow-400">⭐ 438,000</p>
-          </div>
+          <div
+            id="player-2"
+            class="bg-card border border-slate-700 rounded-2xl p-6 shadow-xl hidden min-w-[300px]"
+          ></div>
         </div>
       </div>
     </main>

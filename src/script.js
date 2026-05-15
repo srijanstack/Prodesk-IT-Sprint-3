@@ -16,19 +16,36 @@ const battleContainer = document.getElementById("battleMode");
 
 const player1 = document.getElementById("player-1");
 const player2 = document.getElementById("player-2");
+
 const playerOneInput = document.getElementById("playerOneInput");
 const playerTwoInput = document.getElementById("playerTwoInput");
+
 const battleBtn = document.getElementById("battleBtn");
 
-battleBtn.addEventListener('click', ()=>{
-  if(!playerOneInput.value || !playerTwoInput.value ){
+
+const loaderUI = `<div
+          class="h-full w-full text-white flex items-center justify-center m-20 ml-0 "
+        >
+          <i class="fa-solid fa-circle-notch animate-spin text-[4rem]"></i>
+        </div>`
+
+battleBtn.addEventListener('click', () => {
+  if (!playerOneInput.value || !playerTwoInput.value) {
     alert("Enter both player Username");
     return
   }
   battle(playerOneInput.value, playerTwoInput.value)
+  playerOneInput.value = "";
+  playerTwoInput.value = "";
 })
 
+
 async function battle(username1, username2) {
+  player1.classList.remove("hidden");
+  player2.classList.remove("hidden");
+  player1.innerHTML = loaderUI;
+  player2.innerHTML = loaderUI;
+
   try {
     const [user1, repos1, user2, repos2] = await Promise.all([
       fetchUser(username1),
@@ -37,124 +54,100 @@ async function battle(username1, username2) {
       fetchRepos(username2),
     ]);
 
-    const stars1 = calculateTotalStars(repos1) || 0;
-    const stars2 = calculateTotalStars(repos2) || 0;
-
-    const localPlayer1 = {
+    const playerOne = {
       user: user1,
-      totalStars: stars1,
+      totalStars: calculateTotalStars(repos1),
     };
 
-    const localPlayer2 = {
+    const playerTwo = {
       user: user2,
-      totalStars: stars2,
+      totalStars: calculateTotalStars(repos2),
     };
 
-    console.log(localPlayer1, localPlayer2);
-    console.log("users", localPlayer1.user, localPlayer2.user);
-    renderBattleResults(localPlayer1, localPlayer2)
+    renderBattleResults(playerOne, playerTwo);
   } catch (error) {
-    console.error(error);
-    alert(error.message);
+    const errorUI = renderError(error.message);
+
+    player1.innerHTML = errorUI;
+    player2.innerHTML = errorUI;
   }
 }
 
-function renderBattleResults(user1, user2){
-  console.log("in render", user1,  user2)
+function renderBattleResults(p1, p2) {
+  player1.innerHTML = createCard(
+    p1,
+    p1.totalStars,
+    p2.totalStars,
+    "Player One"
+  );
 
-  player1.innerHTML = 
-          `
-          <div class="flex items-center justify-between mb-5">
-            <h2 class="text-xl font-bold text-white">Player One</h2>
-            <span
-              class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm font-semibold"
-            >
-              Winner
-            </span>
-          </div>
+  player2.innerHTML = createCard(
+    p2,
+    p2.totalStars,
+    p1.totalStars,
+    "Player Two"
+  );
+}
 
-          <div class="flex gap-2 mb-6">
-            <input
-              type="text"
-              id="playerOneInput"
-              placeholder="Enter GitHub username"
-              class="flex-1 px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
 
-          <div class="flex justify-center mb-4">
-            <img
-          
-              src="${user1.user.avatar_url}"
-              alt="${user1.user.login}"
-              class="w-24 h-24 rounded-full border-4 border-slate-700 object-cover"
-            />
-          </div>
+function createCard(player, stars, opponentStars, label) {
+  const isWinner = stars > opponentStars;
+  const isTie = stars === opponentStars;
 
-          <div class="text-center mb-5">
-            <h3  class="text-2xl font-bold text-white">
-                ${user1.user.name}
-            </h3>
+  let statusText = "Loser";
+  let statusClass = "bg-red-500/20 text-red-400";
 
-            <a class="text-blue-400 text-sm" href="${user1.user.html_url}">@${user1.user.login}</a>
-          </div>
+  if (isWinner) {
+    statusText = "Winner";
+    statusClass = "bg-green-500/20 text-green-400";
+  }
 
-          <div class="bg-slate-900 rounded-xl p-4 text-center">
-            <p class="text-slate-400 text-sm uppercase tracking-wide mb-1">
-              Total Stars
-            </p>
+  if (isTie) {
+    statusText = "Tie";
+    statusClass = "bg-gray-500/20 text-gray-300";
+  }
 
-            <p  class="text-3xl font-bold text-yellow-400">
-              ⭐ ${user1.totalStars}
-            </p>
-          </div>
-        `
+  return `
+    <div class="flex items-center justify-between mb-5">
+      <h2 class="text-xl font-bold text-white">${label}</h2>
+      <span class="px-3 py-1 rounded-full ${statusClass} text-sm font-semibold">
+        ${statusText}
+      </span>
+    </div>
 
-        player2.innerHTML = `          <div class="flex items-center justify-between mb-5">
-            <h2 class="text-xl font-bold text-white">Player One</h2>
-            <span
-              class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm font-semibold"
-            >
-              Winner
-            </span>
-          </div>
+    <div class="flex justify-center mb-4">
+      <img
+        src="${player.user.avatar_url}"
+        alt="${player.user.login}"
+        class="w-24 h-24 rounded-full border-4 border-slate-700 object-cover"
+      />
+    </div>
 
-          <div class="flex gap-2 mb-6">
-            <input
-              type="text"
-              id="playerOneInput"
-              placeholder="Enter GitHub username"
-              class="flex-1 px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
+    <div class="text-center mb-5">
+      <h3 class="text-2xl font-bold text-white">
+        ${player.user.name || player.user.login}
+      </h3>
 
-          <div class="flex justify-center mb-4">
-            <img
-          
-              src="${user2.user.avatar_url}"
-              alt="${user2.user.login}"
-              class="w-24 h-24 rounded-full border-4 border-slate-700 object-cover"
-            />
-          </div>
+      <a
+        href="${player.user.html_url}"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-blue-400 text-sm hover:underline"
+      >
+        @${player.user.login}
+      </a>
+    </div>
 
-          <div class="text-center mb-5">
-            <h3  class="text-2xl font-bold text-white">
-                ${user2.user.name}
-            </h3>
+    <div class="bg-slate-900 rounded-xl p-4 text-center">
+      <p class="text-slate-400 text-sm uppercase tracking-wide mb-1">
+        Total Stars
+      </p>
 
-            <a class="text-blue-400 text-sm" href="${user2.user.html_url}">@${user2.user.login}</a>
-          </div>
-
-          <div class="bg-slate-900 rounded-xl p-4 text-center">
-            <p class="text-slate-400 text-sm uppercase tracking-wide mb-1">
-              Total Stars
-            </p>
-
-            <p  class="text-3xl font-bold text-yellow-400">
-              ⭐ {${user2.totalStars}
-            </p>
-          </div>`
-
+      <p class="text-3xl font-bold text-yellow-400">
+        ⭐ ${stars.toLocaleString()}
+      </p>
+    </div>
+  `;
 }
 
 async function fetchUser(username) {
@@ -172,6 +165,7 @@ async function fetchRepos(username) {
     `https://api.github.com/users/${username}/repos?per_page=100`
   );
 
+
   if (!res.ok) {
     throw new Error(`Repos for ${username} not found`);
   }
@@ -188,8 +182,6 @@ function calculateTotalStars(repos) {
 battleModeBtn.addEventListener('click', () => {
   battleContainer.classList.toggle("hidden")
 })
-
-
 
 
 searchBtn.addEventListener('click', () => {
@@ -271,10 +263,8 @@ function renderProfile(data) {
 }
 
 function renderError(message) {
-  userCard.classList.add("flex");
-  userCard.classList.remove("hidden");
-  renderRepos([]);
-  userCard.innerHTML = `
+
+  const errorUI = `
     <div class="w-full text-center py-10">
       <i class="fa-solid fa-circle-exclamation text-red-500 text-5xl mb-4"></i>
       <h2 class="text-3xl font-semibold text-red-400 mb-2">
@@ -285,6 +275,7 @@ function renderError(message) {
       </p>
     </div>
   `;
+  return errorUI;
 }
 
 async function getUser(username) {
@@ -301,7 +292,6 @@ async function getUser(username) {
     userCard.classList.add("hidden");
     userCard.classList.remove("flex");
     const res = await fetch(`https://api.github.com/users/${username}`);
-
     if (!res.ok) {
       if (res.status === 404) {
         throw new Error("User Not Found");
@@ -313,7 +303,10 @@ async function getUser(username) {
     getUserRepos(username)
     renderProfile(data);
   } catch (error) {
-    renderError(error.message);
+    userCard.classList.add("flex");
+    userCard.classList.remove("hidden");
+    renderRepos([]);
+    userCard.innerHTML = renderError(error.message);
   } finally {
     loader.classList.add("hidden");
   }
@@ -330,9 +323,6 @@ async function getUserRepos(username) {
 }
 
 function renderRepos(repos) {
-
-
-
   const languageColors = {
     JavaScript: "#f1e05a",
     TypeScript: "#3178c6",
