@@ -6,9 +6,190 @@ const searchBtn = document.getElementById("searchBtn");
 
 const dataLoaded = document.getElementsByClassName("dataLoaded");
 const enterUsr = document.getElementById("enterUsr");
+
 const resultHeader = document.getElementById("resultHeader");
-const repoContainer = document.getElementById("repoContainer")
-const latestRepoHead = document.getElementById("latestRepoHead")
+const repoContainer = document.getElementById("repoContainer");
+
+const latestRepoHead = document.getElementById("latestRepoHead");
+const battleModeBtn = document.getElementById("battleModeBtn");
+const battleContainer = document.getElementById("battleMode");
+
+const player1 = document.getElementById("player-1");
+const player2 = document.getElementById("player-2");
+const playerOneInput = document.getElementById("playerOneInput");
+const playerTwoInput = document.getElementById("playerTwoInput");
+const battleBtn = document.getElementById("battleBtn");
+
+battleBtn.addEventListener('click', ()=>{
+  if(!playerOneInput.value || !playerTwoInput.value ){
+    alert("Enter both player Username");
+    return
+  }
+  battle(playerOneInput.value, playerTwoInput.value)
+})
+
+async function battle(username1, username2) {
+  try {
+    const [user1, repos1, user2, repos2] = await Promise.all([
+      fetchUser(username1),
+      fetchRepos(username1),
+      fetchUser(username2),
+      fetchRepos(username2),
+    ]);
+
+    const stars1 = calculateTotalStars(repos1) || 0;
+    const stars2 = calculateTotalStars(repos2) || 0;
+
+    const localPlayer1 = {
+      user: user1,
+      totalStars: stars1,
+    };
+
+    const localPlayer2 = {
+      user: user2,
+      totalStars: stars2,
+    };
+
+    console.log(localPlayer1, localPlayer2);
+    console.log("users", localPlayer1.user, localPlayer2.user);
+    renderBattleResults(localPlayer1, localPlayer2)
+  } catch (error) {
+    console.error(error);
+    alert(error.message);
+  }
+}
+
+function renderBattleResults(user1, user2){
+  console.log("in render", user1,  user2)
+
+  player1.innerHTML = 
+          `
+          <div class="flex items-center justify-between mb-5">
+            <h2 class="text-xl font-bold text-white">Player One</h2>
+            <span
+              class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm font-semibold"
+            >
+              Winner
+            </span>
+          </div>
+
+          <div class="flex gap-2 mb-6">
+            <input
+              type="text"
+              id="playerOneInput"
+              placeholder="Enter GitHub username"
+              class="flex-1 px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div class="flex justify-center mb-4">
+            <img
+          
+              src="${user1.user.avatar_url}"
+              alt="${user1.user.login}"
+              class="w-24 h-24 rounded-full border-4 border-slate-700 object-cover"
+            />
+          </div>
+
+          <div class="text-center mb-5">
+            <h3  class="text-2xl font-bold text-white">
+                ${user1.user.name}
+            </h3>
+
+            <a class="text-blue-400 text-sm" href="${user1.user.html_url}">@${user1.user.login}</a>
+          </div>
+
+          <div class="bg-slate-900 rounded-xl p-4 text-center">
+            <p class="text-slate-400 text-sm uppercase tracking-wide mb-1">
+              Total Stars
+            </p>
+
+            <p  class="text-3xl font-bold text-yellow-400">
+              ⭐ ${user1.totalStars}
+            </p>
+          </div>
+        `
+
+        player2.innerHTML = `          <div class="flex items-center justify-between mb-5">
+            <h2 class="text-xl font-bold text-white">Player One</h2>
+            <span
+              class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm font-semibold"
+            >
+              Winner
+            </span>
+          </div>
+
+          <div class="flex gap-2 mb-6">
+            <input
+              type="text"
+              id="playerOneInput"
+              placeholder="Enter GitHub username"
+              class="flex-1 px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div class="flex justify-center mb-4">
+            <img
+          
+              src="${user2.user.avatar_url}"
+              alt="${user2.user.login}"
+              class="w-24 h-24 rounded-full border-4 border-slate-700 object-cover"
+            />
+          </div>
+
+          <div class="text-center mb-5">
+            <h3  class="text-2xl font-bold text-white">
+                ${user2.user.name}
+            </h3>
+
+            <a class="text-blue-400 text-sm" href="${user2.user.html_url}">@${user2.user.login}</a>
+          </div>
+
+          <div class="bg-slate-900 rounded-xl p-4 text-center">
+            <p class="text-slate-400 text-sm uppercase tracking-wide mb-1">
+              Total Stars
+            </p>
+
+            <p  class="text-3xl font-bold text-yellow-400">
+              ⭐ {${user2.totalStars}
+            </p>
+          </div>`
+
+}
+
+async function fetchUser(username) {
+  const res = await fetch(`https://api.github.com/users/${username}`);
+
+  if (!res.ok) {
+    throw new Error(`User ${username} not found`);
+  }
+
+  return res.json();
+}
+
+async function fetchRepos(username) {
+  const res = await fetch(
+    `https://api.github.com/users/${username}/repos?per_page=100`
+  );
+
+  if (!res.ok) {
+    throw new Error(`Repos for ${username} not found`);
+  }
+
+  return res.json();
+}
+
+function calculateTotalStars(repos) {
+  return repos.reduce((total, repo) => {
+    return total + repo.stargazers_count;
+  }, 0);
+}
+
+battleModeBtn.addEventListener('click', () => {
+  battleContainer.classList.toggle("hidden")
+})
+
+
 
 
 searchBtn.addEventListener('click', () => {
@@ -54,6 +235,7 @@ function renderProfile(data) {
             <a
               href="${data.html_url}"
               target="_blank"
+              rel="noopener noreferrer"
               class="text-blue-400 hover:underline"
             >
               @${data.login}
